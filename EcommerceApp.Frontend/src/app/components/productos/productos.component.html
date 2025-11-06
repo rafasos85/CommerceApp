@@ -1,0 +1,38 @@
+<div class="productos-container">
+  <h1>Productos Disponibles</h1>
+
+  @if (loading) {
+    <div class="loading">Cargando productos...</div>
+  }
+
+  @if (errorMessage) {
+    <div class="alert alert-error">{{ errorMessage }}</div>
+  }
+
+  <div class="productos-grid">
+    @for (articulo of articulos; track articulo.id) {
+      <div class="producto-card">
+        <div class="producto-imagen">
+          @if (articulo.imagen) {
+            <img [src]="articulo.imagen" [alt]="articulo.descripcion" />
+          } @else {
+            <div class="no-imagen">Sin imagen</div>
+          }
+        </div>
+        <div class="producto-info">
+          <h3>{{ articulo.descripcion }}</h3>
+          <p class="codigo">Código: {{ articulo.codigo }}</p>
+          <p class="precio">${{ articulo.precio | number:'1.2-2' }}</p>
+          <p class="stock">Stock: {{ articulo.stock }} unidades</p>
+          <button class="btn btn-primary" (click)="agregarAlCarrito(articulo)">
+            Agregar al Carrito
+          </button>
+        </div>
+      </div>
+    }
+  </div>
+
+  @if (!loading && articulos.length === 0) {
+    <div class="no-productos">No hay productos disponibles</div>
+  }
+</div>

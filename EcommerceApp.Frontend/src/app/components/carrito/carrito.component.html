@@ -1,0 +1,54 @@
+<div class="carrito-container">
+  <h1>Mi Carrito de Compras</h1>
+
+  @if (loading) {
+    <div class="loading">Cargando carrito...</div>
+  }
+
+  @if (!loading && carrito && carrito.items && carrito.items.length > 0) {
+    <div class="carrito-content">
+      <div class="items-list">
+        @for (item of carrito.items; track item.id) {
+          <div class="carrito-item">
+            <div class="item-info">
+              <h3>{{ item.articuloDescripcion }}</h3>
+              <p class="precio-unitario">Precio: ${{ item.precioUnitario | number:'1.2-2' }}</p>
+            </div>
+            <div class="item-cantidad">
+              <button (click)="actualizarCantidad(item.id, item.cantidad - 1)" class="btn-cantidad">-</button>
+              <span class="cantidad">{{ item.cantidad }}</span>
+              <button (click)="actualizarCantidad(item.id, item.cantidad + 1)" class="btn-cantidad">+</button>
+            </div>
+            <div class="item-subtotal">
+              <p class="subtotal">${{ item.subtotal | number:'1.2-2' }}</p>
+            </div>
+            <div class="item-actions">
+              <button (click)="removerItem(item.id)" class="btn btn-danger">Eliminar</button>
+            </div>
+          </div>
+        }
+      </div>
+
+      <div class="carrito-resumen">
+        <h2>Resumen de Compra</h2>
+        <div class="resumen-item">
+          <span>Total de items:</span>
+          <span>{{ carrito.items.length }}</span>
+        </div>
+        <div class="resumen-total">
+          <span>Total:</span>
+          <span>${{ carrito.total | number:'1.2-2' }}</span>
+        </div>
+        <button (click)="completarCompra()" class="btn btn-success">Completar Compra</button>
+        <a routerLink="/productos" class="btn btn-secondary">Seguir Comprando</a>
+      </div>
+    </div>
+  }
+
+  @if (!loading && (!carrito || !carrito.items || carrito.items.length === 0)) {
+    <div class="carrito-vacio">
+      <p>Tu carrito está vacío</p>
+      <a routerLink="/productos" class="btn btn-primary">Ver Productos</a>
+    </div>
+  }
+</div>

@@ -1,0 +1,27 @@
+<nav class="navbar">
+  <div class="navbar-container">
+    <div class="navbar-brand">
+      <a routerLink="/">E-Commerce</a>
+    </div>
+
+    <div class="navbar-menu">
+      <a routerLink="/productos" routerLinkActive="active">Productos</a>
+      
+      @if (currentUser$ | async; as user) {
+        <a routerLink="/carrito" routerLinkActive="active" class="cart-link">
+          Carrito
+          @if (itemCount > 0) {
+            <span class="cart-badge">{{ itemCount }}</span>
+          }
+        </a>
+        <div class="user-menu">
+          <span class="user-name">{{ user.nombre }}</span>
+          <button (click)="logout()" class="btn-logout">Cerrar Sesión</button>
+        </div>
+      } @else {
+        <a routerLink="/login" routerLinkActive="active">Iniciar Sesión</a>
+        <a routerLink="/registro" routerLinkActive="active">Registrarse</a>
+      }
+    </div>
+  </div>
+</nav>
