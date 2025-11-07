@@ -8,7 +8,7 @@ import { Articulo, ArticuloCreate } from '../models/articulo.model';
 })
 export class ArticuloService {
   private http = inject(HttpClient);
-  private apiUrl = 'https://localhost:7000/api/articulos';
+  private apiUrl = 'https://localhost:7272/api/articulos';
 
   getAll(): Observable<Articulo[]> {
     return this.http.get<Articulo[]>(this.apiUrl);
@@ -32,5 +32,9 @@ export class ArticuloService {
 
   delete(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${id}`);
+  }
+
+  asignarATienda(dto: { articuloId: number; tiendaId: number; stockTienda: number }): Observable<any> {
+    return this.http.post(`${this.apiUrl}/asignar-tienda`, dto);
   }
 }

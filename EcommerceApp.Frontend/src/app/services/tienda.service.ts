@@ -8,7 +8,7 @@ import { Tienda, TiendaCreate } from '../models/tienda.model';
 })
 export class TiendaService {
   private http = inject(HttpClient);
-  private apiUrl = 'https://localhost:7000/api/tiendas';
+  private apiUrl = 'https://localhost:7272/api/tiendas';
 
   getAll(): Observable<Tienda[]> {
     return this.http.get<Tienda[]>(this.apiUrl);

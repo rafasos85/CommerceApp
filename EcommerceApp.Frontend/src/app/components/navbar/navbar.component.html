@@ -1,13 +1,13 @@
 <nav class="navbar">
   <div class="navbar-container">
     <div class="navbar-brand">
-      <a routerLink="/">E-Commerce</a>
+      <a routerLink="/">Tienda de Ropa Rafael</a>
     </div>
 
     <div class="navbar-menu">
-      <a routerLink="/productos" routerLinkActive="active">Productos</a>
-      
       @if (currentUser$ | async; as user) {
+        <a routerLink="/productos" routerLinkActive="active">Productos</a>
+        <a routerLink="/admin/articulos" routerLinkActive="active">Administrador de Artículos</a>
         <a routerLink="/carrito" routerLinkActive="active" class="cart-link">
           Carrito
           @if (itemCount > 0) {

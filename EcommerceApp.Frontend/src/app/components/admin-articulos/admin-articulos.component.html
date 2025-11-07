@@ -1,0 +1,206 @@
+<div class="admin-container">
+  <h1>Administración de Artículos</h1>
+
+  <div class="admin-content">
+    <!-- Formulario para crear artículo -->
+    <div class="form-section">
+      <h2>Crear Nuevo Artículo</h2>
+      
+      <form (ngSubmit)="onSubmit()" #articuloForm="ngForm">
+        <div class="form-group">
+          <label for="codigo">Código *</label>
+          <input
+            type="text"
+            id="codigo"
+            name="codigo"
+            [(ngModel)]="articulo.codigo"
+            required
+            class="form-control"
+            placeholder="Ej: ART001"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="descripcion">Descripción *</label>
+          <input
+            type="text"
+            id="descripcion"
+            name="descripcion"
+            [(ngModel)]="articulo.descripcion"
+            required
+            class="form-control"
+            placeholder="Descripción del artículo"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="precio">Precio *</label>
+          <input
+            type="number"
+            id="precio"
+            name="precio"
+            [(ngModel)]="articulo.precio"
+            required
+            min="0"
+            step="0.01"
+            class="form-control"
+            placeholder="0.00"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="stock">Stock Inicial *</label>
+          <input
+            type="number"
+            id="stock"
+            name="stock"
+            [(ngModel)]="articulo.stock"
+            required
+            min="0"
+            class="form-control"
+            placeholder="0"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="imagen">URL de Imagen</label>
+          <input
+            type="text"
+            id="imagen"
+            name="imagen"
+            [(ngModel)]="articulo.imagen"
+            class="form-control"
+            placeholder="https://ejemplo.com/imagen.jpg"
+          />
+        </div>
+
+        @if (errorMessage) {
+          <div class="alert alert-error">
+            {{ errorMessage }}
+            <button type="button" class="close-btn" (click)="clearMessages()">×</button>
+          </div>
+        }
+
+        @if (successMessage) {
+          <div class="alert alert-success">
+            {{ successMessage }}
+            <button type="button" class="close-btn" (click)="clearMessages()">×</button>
+          </div>
+        }
+
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="!articuloForm.valid || loading"
+        >
+          {{ loading ? 'Guardando...' : 'Crear Artículo' }}
+        </button>
+      </form>
+    </div>
+
+    <!-- Sección para asignar artículo a tienda -->
+    <div class="form-section">
+      <h2>Asignar Artículo a Tienda</h2>
+      
+      <div class="form-group">
+        <label for="selectArticulo">Seleccionar Artículo</label>
+        <select
+          id="selectArticulo"
+          name="selectArticulo"
+          [(ngModel)]="selectedArticuloId"
+          class="form-control"
+        >
+          <option [value]="0">-- Seleccione un artículo --</option>
+          @for (art of articulos; track art.id) {
+            <option [value]="art.id">{{ art.codigo }} - {{ art.descripcion }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="selectTienda">Seleccionar Tienda</label>
+        <select
+          id="selectTienda"
+          name="selectTienda"
+          [(ngModel)]="selectedTiendaId"
+          class="form-control"
+        >
+          <option [value]="0">-- Seleccione una tienda --</option>
+          @for (tienda of tiendas; track tienda.id) {
+            <option [value]="tienda.id">{{ tienda.sucursal }} - {{ tienda.direccion }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="stockTienda">Stock en Tienda</label>
+        <input
+          type="number"
+          id="stockTienda"
+          name="stockTienda"
+          [(ngModel)]="stockTienda"
+          min="0"
+          class="form-control"
+          placeholder="Cantidad disponible en esta tienda"
+        />
+      </div>
+
+      <button
+        type="button"
+        class="btn btn-secondary"
+        (click)="asignarATienda()"
+        [disabled]="!selectedArticuloId || !selectedTiendaId"
+      >
+        Asignar a Tienda
+      </button>
+    </div>
+  </div>
+
+  <!-- Lista de artículos -->
+  <div class="articulos-list">
+    <h2>Artículos Registrados</h2>
+    
+    @if (loadingArticulos) {
+      <div class="loading">Cargando artículos...</div>
+    }
+
+    @if (!loadingArticulos && articulos.length === 0) {
+      <div class="no-data">No hay artículos registrados</div>
+    }
+
+    <div class="table-container">
+      <table class="articulos-table">
+        <thead>
+          <tr>
+            <th>Código</th>
+            <th>Descripción</th>
+            <th>Precio</th>
+            <th>Stock</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (art of articulos; track art.id) {
+            <tr>
+              <td>{{ art.codigo }}</td>
+              <td>{{ art.descripcion }}</td>
+              <td>${{ art.precio | number:'1.2-2' }}</td>
+              <td>{{ art.stock }}</td>
+              <td>
+                <span [class]="art.activo ? 'badge badge-active' : 'badge badge-inactive'">
+                  {{ art.activo ? 'Activo' : 'Inactivo' }}
+                </span>
+              </td>
+              <td>
+                <button class="btn-icon btn-delete" (click)="deleteArticulo(art.id)" title="Eliminar">
+                  🗑️
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

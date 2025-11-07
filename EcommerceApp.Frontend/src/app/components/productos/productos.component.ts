@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ArticuloService } from '../../services/articulo.service';
 import { CarritoService } from '../../services/carrito.service';
@@ -9,14 +9,15 @@ import { Articulo } from '../../models/articulo.model';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './productos.component.html',
-  styleUrls: ['./productos.component.css']
+  styleUrls: ['./productos.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProductosComponent implements OnInit {
   private articuloService = inject(ArticuloService);
   private carritoService = inject(CarritoService);
 
   articulos: Articulo[] = [];
-  loading = true;
+  loading = false;
   errorMessage = '';
 
   ngOnInit(): void {
@@ -28,6 +29,7 @@ export class ProductosComponent implements OnInit {
       next: (data) => {
         this.articulos = data.filter(a => a.activo && a.stock > 0);
         this.loading = false;
+        console.log("articulos cargados:", this.articulos);
       },
       error: (error) => {
         this.errorMessage = 'Error al cargar los productos';

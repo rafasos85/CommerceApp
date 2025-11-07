@@ -8,7 +8,7 @@ import { Carrito, AgregarItemCarrito } from '../models/carrito.model';
 })
 export class CarritoService {
   private http = inject(HttpClient);
-  private apiUrl = 'https://localhost:7000/api/carrito';
+  private apiUrl = 'https://localhost:7272/api/carrito';
   private carritoSubject = new BehaviorSubject<Carrito | null>(null);
   public carrito$ = this.carritoSubject.asObservable();
 

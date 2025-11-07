@@ -8,7 +8,7 @@ import { LoginRequest, LoginResponse, ClienteCreate, Cliente } from '../models/c
 })
 export class AuthService {
   private http = inject(HttpClient);
-  private apiUrl = 'https://localhost:7000/api';
+  private apiUrl = 'https://localhost:7272/api';
   private currentUserSubject = new BehaviorSubject<Cliente | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
 
