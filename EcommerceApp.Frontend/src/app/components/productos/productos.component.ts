@@ -31,7 +31,7 @@ export class ProductosComponent implements OnInit {
         this.articulos = data.filter(a => a.activo && a.stock > 0);
         this.loading = false;
         console.log("articulos cargados:", this.articulos);
-        this.cdr.markForCheck(); // 👈 fuerza actualización de la vista
+        this.cdr.markForCheck(); 
       },
       error: (error) => {
         this.errorMessage = 'Error al cargar los productos';

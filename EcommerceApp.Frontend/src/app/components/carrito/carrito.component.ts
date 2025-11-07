@@ -19,6 +19,11 @@ export class CarritoComponent implements OnInit {
   carrito: Carrito | null = null;
   loading = true;
 
+  // Devuelve la suma de las cantidades de todos los items en el carrito
+  get totalItems(): number {
+    return this.carrito?.items?.reduce((sum, item) => sum + (item.cantidad ?? 0), 0) ?? 0;
+  }
+
   ngOnInit(): void {
     this.loadCarrito();
   }
@@ -28,11 +33,11 @@ export class CarritoComponent implements OnInit {
       next: (data) => {
         this.carrito = data;
         this.loading = false;
-         this.cdr.markForCheck(); // 👈 fuerza actualización de la vista
+         this.cdr.markForCheck(); 
       },
       error: () => {
         this.loading = false;
-         this.cdr.markForCheck(); // 👈 fuerza actualización de la vista
+         this.cdr.markForCheck(); 
       }
     });
   }
@@ -43,11 +48,11 @@ export class CarritoComponent implements OnInit {
     this.carritoService.actualizarItem(itemId, cantidad).subscribe({
       next: (data) => {
         this.carrito = data;
-         this.cdr.markForCheck(); // 👈 fuerza actualización de la vista
+         this.cdr.markForCheck(); 
       },
       error: (error) => {
         alert(error.error?.message || 'Error al actualizar cantidad');
-         this.cdr.markForCheck(); // 👈 fuerza actualización de la vista
+         this.cdr.markForCheck(); 
       }
     });
   }
@@ -72,7 +77,7 @@ export class CarritoComponent implements OnInit {
       next: () => {
         alert('¡Compra completada exitosamente!');
         this.router.navigate(['/productos']);
-         this.cdr.markForCheck(); // 👈 fuerza actualización de la vista
+         this.cdr.markForCheck();
       },
       error: (error) => {
         alert(error.error?.message || 'Error al completar la compra');
