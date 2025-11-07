@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ArticuloService } from '../../services/articulo.service';
@@ -16,6 +16,7 @@ import { Tienda } from '../../models/tienda.model';
 export class AdminArticulosComponent implements OnInit {
   private articuloService = inject(ArticuloService);
   private tiendaService = inject(TiendaService);
+   private cdr = inject(ChangeDetectorRef);
 
   articulo: ArticuloCreate = {
     codigo: '',
@@ -49,10 +50,12 @@ export class AdminArticulosComponent implements OnInit {
         this.articulos = data;
         this.loadingArticulos = false;
         console.log('Artículos cargados:', data);
+         this.cdr.markForCheck(); // 👈 fuerza actualización de la vista
       },
       error: (error) => {
         this.errorMessage = 'Error al cargar artículos';
         this.loadingArticulos = false;
+         this.cdr.markForCheck(); // 👈 fuerza actualización de la vista
       }
     });
   }
@@ -61,9 +64,11 @@ export class AdminArticulosComponent implements OnInit {
     this.tiendaService.getAll().subscribe({
       next: (data) => {
         this.tiendas = data;
+         this.cdr.markForCheck(); // 👈 fuerza actualización de la vista
       },
       error: (error) => {
         console.error('Error al cargar tiendas', error);
+         this.cdr.markForCheck(); // 👈 fuerza actualización de la vista
       }
     });
   }
@@ -90,6 +95,7 @@ export class AdminArticulosComponent implements OnInit {
   asignarATienda(): void {
     if (!this.selectedArticuloId || !this.selectedTiendaId) {
       this.errorMessage = 'Debe seleccionar un artículo y una tienda';
+       this.cdr.markForCheck(); // 👈 fuerza actualización de la vista
       return;
     }
 
@@ -105,9 +111,11 @@ export class AdminArticulosComponent implements OnInit {
         this.selectedArticuloId = 0;
         this.selectedTiendaId = 0;
         this.stockTienda = 0;
+         this.cdr.markForCheck(); // 👈 fuerza actualización de la vista
       },
       error: (error) => {
         this.errorMessage = error.error?.message || 'Error al asignar artículo a tienda';
+         this.cdr.markForCheck(); // 👈 fuerza actualización de la vista
       }
     });
   }
@@ -136,10 +144,12 @@ export class AdminArticulosComponent implements OnInit {
       imagen: '',
       stock: 0
     };
+     this.cdr.markForCheck(); // 👈 fuerza actualización de la vista
   }
 
   clearMessages(): void {
     this.successMessage = '';
     this.errorMessage = '';
+     this.cdr.markForCheck(); // 👈 fuerza actualización de la vista
   }
 }

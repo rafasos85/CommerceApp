@@ -1,19 +1,20 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject ,ChangeDetectorRef} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { CarritoService } from '../../services/carrito.service';
 import { Carrito } from '../../models/carrito.model';
 
 @Component({
   selector: 'app-carrito',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './carrito.component.html',
   styleUrls: ['./carrito.component.css']
 })
 export class CarritoComponent implements OnInit {
   private carritoService = inject(CarritoService);
   private router = inject(Router);
+   private cdr = inject(ChangeDetectorRef);
 
   carrito: Carrito | null = null;
   loading = true;
@@ -27,9 +28,11 @@ export class CarritoComponent implements OnInit {
       next: (data) => {
         this.carrito = data;
         this.loading = false;
+         this.cdr.markForCheck(); // 👈 fuerza actualización de la vista
       },
       error: () => {
         this.loading = false;
+         this.cdr.markForCheck(); // 👈 fuerza actualización de la vista
       }
     });
   }
@@ -40,9 +43,11 @@ export class CarritoComponent implements OnInit {
     this.carritoService.actualizarItem(itemId, cantidad).subscribe({
       next: (data) => {
         this.carrito = data;
+         this.cdr.markForCheck(); // 👈 fuerza actualización de la vista
       },
       error: (error) => {
         alert(error.error?.message || 'Error al actualizar cantidad');
+         this.cdr.markForCheck(); // 👈 fuerza actualización de la vista
       }
     });
   }
@@ -67,6 +72,7 @@ export class CarritoComponent implements OnInit {
       next: () => {
         alert('¡Compra completada exitosamente!');
         this.router.navigate(['/productos']);
+         this.cdr.markForCheck(); // 👈 fuerza actualización de la vista
       },
       error: (error) => {
         alert(error.error?.message || 'Error al completar la compra');

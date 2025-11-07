@@ -74,19 +74,7 @@
           />
         </div>
 
-        @if (errorMessage) {
-          <div class="alert alert-error">
-            {{ errorMessage }}
-            <button type="button" class="close-btn" (click)="clearMessages()">×</button>
-          </div>
-        }
 
-        @if (successMessage) {
-          <div class="alert alert-success">
-            {{ successMessage }}
-            <button type="button" class="close-btn" (click)="clearMessages()">×</button>
-          </div>
-        }
 
         <button
           type="submit"
@@ -155,6 +143,20 @@
       </button>
     </div>
   </div>
+
+          @if (errorMessage) {
+          <div class="alert alert-error">
+            {{ errorMessage }}
+            <button type="button" class="close-btn" (click)="clearMessages()">×</button>
+          </div>
+        }
+
+        @if (successMessage) {
+          <div class="alert alert-success">
+            {{ successMessage }}
+            <button type="button" class="close-btn" (click)="clearMessages()">×</button>
+          </div>
+        }
 
   <!-- Lista de artículos -->
   <div class="articulos-list">
